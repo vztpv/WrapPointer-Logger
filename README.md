@@ -14,8 +14,8 @@
         testB.remove();
         
     Log Example) // A, B, C, D -> address?
-        new = { A = { make = { B } } }
-        new = { C = { make = { D } } }
+        new = { A = { new = { B } } }
+        new = { C = { new = { D } } }
         assign = { B = C }
         assign = { D = A }
         delete = { A = { delete = { B } }
