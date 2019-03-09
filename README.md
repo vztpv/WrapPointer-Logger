@@ -10,8 +10,8 @@
         WrapPointer<Node> testC = WrapPointer<Node>::New();
         testA->next = testC;
         testC->next = testA;
-        testA.remove();
-        testB.remove();
+        testA.Delete();
+        testB.Delete();
         
     Log Example) // A, B, C, D -> address?
         new = { A = { new = { B } } }
