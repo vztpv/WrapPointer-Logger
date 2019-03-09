@@ -16,7 +16,9 @@
     Log Example) // A, B, C, D -> address?
         new = { A = { B = { } } }
         new = { C = { D = { } } }
+        access = { A }
         assign = { B = C }
+        access = { C }
         assign = { D = A }
         delete = { A }
         delete = { C }
