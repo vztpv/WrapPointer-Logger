@@ -1,6 +1,19 @@
 # WrapPointer-Logger
     WrapPointer (Wrapper class for pointer)
-    Log Example)
+    Code Example)
+        class Node {
+        public:
+            int val;
+            WrapPointer<Node> next;
+        };
+        WrapPointer<Node> testA;
+        WrapPointer<Node> testc;
+        testA->next = testC;
+        testC->next = testA;
+        testA.remove();
+        testB.remove();
+        
+    Log Example) // A, B, C, D -> address?
       new = { A = { make = { B } } }
       new = { C = { make = { D } } }
       assign = { B = C }
