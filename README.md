@@ -7,7 +7,7 @@
             WrapPointer<Node> next;
         };
         WrapPointer<Node> testA = WrapPointer<Node>::New();
-        WrapPointer<Node> testc = WrapPointer<Node>::New();
+        WrapPointer<Node> testC = WrapPointer<Node>::New();
         testA->next = testC;
         testC->next = testA;
         testA.remove();
