@@ -14,8 +14,8 @@
         testB.Delete();
         
     Log Example) // A, B, C, D -> address?
-        new = { A = { B } }
-        new = { C = { D } }
+        new = { A = { B = { } } }
+        new = { C = { D = { } } }
         assign = { B = C }
         assign = { D = A }
         delete = { A }
