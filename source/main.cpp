@@ -22,13 +22,22 @@ public:
 
 int main(void)
 {
-	Manager::fileName = "output.txt";
-	Manager::Clear();
+	FileManager::fileName = "output.txt";
+	FileManager::ClearFile();
 
 	// Test
 	WrapPointer<Node> x = WrapPointer<Node>::New(3);
 	WrapPointer<Node> y = WrapPointer<Node>::New(5);
 	
+	x->next = y;
+	y->next = x;
+
+	x.Delete();
+	y.Delete();
+
+	x = WrapPointer<Node>::New(3);
+	y = WrapPointer<Node>::New(5);
+
 	x->next = y;
 	y->next = x;
 
