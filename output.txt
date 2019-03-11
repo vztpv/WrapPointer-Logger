@@ -1,66 +1,66 @@
 New = { 
-1 = { 
+1"x" = { 
 
-2 = { }
+2"" = { }
+3"" = { }
+4"" = { }
  } } 
 
-NewFromOther = { 3 = 1 }
-ReturnId = { 1 }
+NewFromOther = { 5"_x" = 1"x" }
+ReturnId = { 1"x" }
 New = { 
-1 = { 
+1"y" = { 
 
-4 = { }
+6"" = { }
+7"" = { }
+8"" = { }
  } } 
 
-NewFromOther = { 5 = 1 }
-ReturnId = { 1 }
-access = { 3 } 
-assign = { 
-2 = 5  
- } 
-access = { 5 } 
-assign = { 
-4 = 3  
- } 
-delete = { 3 }
-ReturnId = { 2 }
-delete = { 5 }
-ReturnId = { 4 }
+NewFromOther = { 9"_y" = 1"y" }
+ReturnId = { 1"y" }
+delete = { 5"_x" }
+ReturnId = { 4"next" }
+ReturnId = { 3"child" }
+ReturnId = { 2"parent" }
+delete = { 9"_y" }
+ReturnId = { 8"next" }
+ReturnId = { 7"child" }
+ReturnId = { 6"parent" }
 New = { 
-1 = { 
+1"a" = { 
 
-2 = { }
+2"" = { }
+3"" = { }
+4"" = { }
  } } 
 
-NewFromOther = { 4 = 1 }
-ReturnId = { 1 }
+NewFromOther = { 6"_a" = 1"a" }
+ReturnId = { 1"a" }
 assign = { 
-3 = 4  
+5"_x" = 6"_a"  
  } 
-ReturnId = { 4 }
+ReturnId = { 6"_a" }
 New = { 
-1 = { 
+1"b" = { 
 
-4 = { }
+6"" = { }
+7"" = { }
+8"" = { }
  } } 
 
-NewFromOther = { 6 = 1 }
-ReturnId = { 1 }
+NewFromOther = { 10"_b" = 1"b" }
+ReturnId = { 1"b" }
 assign = { 
-5 = 6  
+9"_y" = 10"_b"  
  } 
-ReturnId = { 6 }
-access = { 3 } 
-assign = { 
-2 = 5  
- } 
-access = { 5 } 
-assign = { 
-4 = 3  
- } 
-delete = { 3 }
-ReturnId = { 2 }
-delete = { 5 }
-ReturnId = { 4 }
-ReturnId = { 5 }
-ReturnId = { 3 }
+ReturnId = { 10"_b" }
+delete = { 5"_x" }
+ReturnId = { 4"next" }
+ReturnId = { 3"child" }
+ReturnId = { 2"parent" }
+delete = { 9"_y" }
+ReturnId = { 8"next" }
+ReturnId = { 7"child" }
+ReturnId = { 6"parent" }
+ReturnId = { 9"_y" }
+ReturnId = { 5"_x" }
