@@ -36,9 +36,14 @@ public:
 template <class T>
 class WrapPointer
 {
+public:
+	void SetName(const std::string& str) {
+		this->name = str;
+	}
 private:
+	std::string name; // const?
 	T* ptr = nullptr;
-	long long pid;
+	long long pid; // const?
 
 	inline static std::set<long long> removed_tids;
 	inline static std::set<long long> tids;
@@ -59,33 +64,40 @@ private:
 		tids.erase(this->pid);
 	}
 private:
-	WrapPointer(T* _ptr)
-		: ptr(_ptr)
+	WrapPointer(T* _ptr, const std::string& _name="")
+		: ptr(_ptr), name(_name)
 	{
 		pid = GetId();
-		FileManager::WriteLine(std::string("New = { ") + wiz::toStr(pid) + " }");
+		FileManager::WriteLine(std::string("New = { ") + wiz::toStr(pid) + "\"" + name + "\"" + " }");
 	}
-	WrapPointer(long long _pid, T* _ptr)
-		: ptr(_ptr)
+	WrapPointer(long long _pid, T* _ptr, const std::string& _name = "")
+		: ptr(_ptr), name(_name)
 	{
 		pid = _pid;
 	}
-	WrapPointer(long long _pid) {
+	WrapPointer(long long _pid, const std::string& _name = "")
+		: name(_name)
+	{
 		pid = _pid;
+
 	}
 public:
 	WrapPointer(const WrapPointer& other) {
+		name = "_" + other.name;
 		pid = GetId();
 		ptr = other.ptr;
-		FileManager::WriteLine(std::string("NewFromOther = { ") + wiz::toStr(pid) + " = " + wiz::toStr(other.pid) + " }");
+		FileManager::WriteLine(std::string("NewFromOther = { ") + wiz::toStr(pid) + "\"" + name + "\"" + " = "
+			+ wiz::toStr(other.pid) + "\"" + other.name + "\"" + " }");
 	}
-	WrapPointer() {
+	WrapPointer(const std::string& _name="") 
+		: name(_name)
+	{
 		pid = GetId();
-		FileManager::WriteLine(std::string() + wiz::toStr(pid) + " = { }");
+		FileManager::WriteLine(std::string() + wiz::toStr(pid) + "\"" + name + "\"" + " = { }");
 	}
 	
 	virtual ~WrapPointer() {
-		FileManager::WriteLine(std::string("ReturnId = { ") + wiz::toStr(pid) + " }");
+		FileManager::WriteLine(std::string("ReturnId = { ") + wiz::toStr(pid) + "\"" + name + "\"" + " }");
 		ReturnId();
 	}
 public:
@@ -103,11 +115,21 @@ public:
 	void Delete();
 	void DeleteArray();
 	
-	static WrapPointer New()
+	static WrapPointer NewWithName()
 	{
 		auto pid = GetId();
 		FileManager::WriteLine(std::string("New = { \n") + wiz::toStr(pid) + " = { \n");
-		auto x = WrapPointer<T>(new T(), pid);
+		auto x = WrapPointer<T>(new T(name), pid);
+		FileManager::WriteLine(std::string(" } } \n"));
+		return x;
+	}
+
+
+	static WrapPointer NewWithName(const std::string& name="")
+	{
+		auto pid = GetId();
+		FileManager::WriteLine(std::string("New = { \n") + wiz::toStr(pid) + "\"" + name + "\"" + " = { \n");
+		auto x = WrapPointer<T>(new T(name), pid);
 		FileManager::WriteLine(std::string(" } } \n"));
 		return x;
 	}
@@ -116,8 +138,17 @@ public:
 	static WrapPointer New(Ts&& ... args) // emplace_new
 	{
 		auto pid = GetId();
-		FileManager::WriteLine(std::string("New = { \n") + wiz::toStr(pid) + " = { \n");
+		FileManager::WriteLine(std::string("New = { \n") + wiz::toStr(pid)  + " = { \n");
 		auto temp = WrapPointer<T>(pid, new T(std::forward<Ts>(args)...));
+		FileManager::WriteLine(std::string(" } } \n"));
+		return temp;
+	}
+	template <typename... Ts>
+	static WrapPointer NewWithName(const std::string& _name, Ts&& ... args) // emplace_new
+	{
+		auto pid = GetId();
+		FileManager::WriteLine(std::string("New = { \n") + wiz::toStr(pid) + "\"" + _name + "\"" + " = { \n");
+		auto temp = WrapPointer<T>(pid, new T(std::forward<Ts>(args)...), _name);
 		FileManager::WriteLine(std::string(" } } \n"));
 		return temp;
 	}
@@ -140,17 +171,18 @@ const T& WrapPointer<T>::operator*() const {
 }
 template <class T>
 T* WrapPointer<T>::operator->() {
-	FileManager::WriteLine(std::string() + "access = { " + wiz::toStr(this->pid) + " } ");
+	FileManager::WriteLine(std::string() + "access = { " + wiz::toStr(this->pid) + "\"" + name + "\"" + " } ");
 	return ptr;
 }
 template <class T>
 const T* WrapPointer<T>::operator->() const {
-	FileManager::WriteLine(std::string() + "access = { " + wiz::toStr(this->pid) + " } ");
+	FileManager::WriteLine(std::string() + "access = { " + wiz::toStr(this->pid) + "\"" + name + "\"" + " } ");
 	return ptr;
 }
 template <class T>
 WrapPointer<T>& WrapPointer<T>::operator=(const WrapPointer& other) {
-	FileManager::WriteLine(std::string() + "assign = { \n" + wiz::toStr(this->pid) + " = " + wiz::toStr(other.pid) + "  ");
+	FileManager::WriteLine(std::string() + "assign = { \n" + wiz::toStr(this->pid) + "\"" + this->name + "\"" +
+		" = " + wiz::toStr(other.pid) + "\"" + other.name + "\""  + "  ");
 
 	this->ptr = other.ptr;
 
@@ -170,12 +202,10 @@ WrapPointer<T>::operator bool() const {
 }
 template <class T>
 bool WrapPointer<T>::operator==(const WrapPointer& other) const {
-
 	return ptr == other.ptr;
 }
 template <class T>
 bool WrapPointer<T>::operator!=(const WrapPointer& other) const {
-
 	return ptr != other.ptr;
 }
 template <class T>
@@ -185,12 +215,12 @@ WrapPointer<T> WrapPointer<T>::NewArray(size_t n) {
 }
 template <class T>
 void WrapPointer<T>::Delete() {
-	FileManager::WriteLine(std::string() + "delete = { " + wiz::toStr(pid) + " }");
+	FileManager::WriteLine(std::string() + "delete = { " + wiz::toStr(pid) + "\"" + name + "\"" + " }");
 	delete ptr;
 }
 template <class T>
 void WrapPointer<T>::DeleteArray() {
-	FileManager::WriteLine(std::string() + "delete[] = { " + wiz::toStr(pid) + " }");
+	FileManager::WriteLine(std::string() + "delete[] = { " + wiz::toStr(pid) + "\"" + name + "\"" + " }");
 	delete[] ptr;
 }
 
