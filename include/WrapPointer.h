@@ -93,7 +93,7 @@ public:
 		: name(_name)
 	{
 		pid = GetId();
-		FileManager::WriteLine(std::string() + wiz::toStr(pid) + "\"" + name + "\"" + " = { }");
+		FileManager::WriteLine(std::string("NewEmpty = { ") + wiz::toStr(pid) + "\"" + name + "\"" + " }");
 	}
 	
 	virtual ~WrapPointer() {
