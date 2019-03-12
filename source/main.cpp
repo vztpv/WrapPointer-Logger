@@ -35,18 +35,20 @@ int main(void)
 	// Test
 	WrapPointer<Node> x = WrapPointer<Node>::NewWithName("x", 3);
 	WrapPointer<Node> y = WrapPointer<Node>::NewWithName("y", 5);
-	
-	//x->next = y;
-	//y->next = x;
+	WrapPointer<Node> z;
+
+	x->next = y;
+	y->next = x;
 
 	x.Delete();
 	y.Delete();
+	//x.Delete();
 
-	x = WrapPointer<Node>::NewWithName("a", 3);
+	x = WrapPointer<Node>::NewWithName("a", 3); 
 	y = WrapPointer<Node>::NewWithName("b", 5);
 
-	//x->next = y;
-	//y->next = x;
+	x->next = y;
+	y->next = x;
 
 	x.Delete();
 	y.Delete();
