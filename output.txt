@@ -1,9 +1,9 @@
 New = { 
 1"x" = { 
 
-2"" = { }
-3"" = { }
-4"" = { }
+NewEmpty = { 2"" }
+NewEmpty = { 3"" }
+NewEmpty = { 4"" }
  } } 
 
 NewFromOther = { 5"_x" = 1"x" }
@@ -11,14 +11,14 @@ ReturnId = { 1"x" }
 New = { 
 1"y" = { 
 
-6"" = { }
-7"" = { }
-8"" = { }
+NewEmpty = { 6"" }
+NewEmpty = { 7"" }
+NewEmpty = { 8"" }
  } } 
 
 NewFromOther = { 9"_y" = 1"y" }
 ReturnId = { 1"y" }
-1"" = { }
+NewEmpty = { 1"z" }
 access = { 5"_x" } 
 assign = { 
 4"next" = 9"_y"  
@@ -38,9 +38,9 @@ ReturnId = { 6"parent" }
 New = { 
 2"a" = { 
 
-3"" = { }
-4"" = { }
-6"" = { }
+NewEmpty = { 3"" }
+NewEmpty = { 4"" }
+NewEmpty = { 6"" }
  } } 
 
 NewFromOther = { 7"_a" = 2"a" }
@@ -52,9 +52,9 @@ ReturnId = { 7"_a" }
 New = { 
 2"b" = { 
 
-7"" = { }
-8"" = { }
-10"" = { }
+NewEmpty = { 7"" }
+NewEmpty = { 8"" }
+NewEmpty = { 10"" }
  } } 
 
 NewFromOther = { 11"_b" = 2"b" }
@@ -71,6 +71,9 @@ access = { 9"_y" }
 assign = { 
 10"next" = 5"_x"  
  } 
+assign = { 
+1"z" = 9"_y"  
+ } 
 delete = { 5"_x" }
 ReturnId = { 6"next" }
 ReturnId = { 4"child" }
@@ -79,6 +82,4 @@ delete = { 9"_y" }
 ReturnId = { 10"next" }
 ReturnId = { 8"child" }
 ReturnId = { 7"parent" }
-ReturnId = { 1"" }
-ReturnId = { 9"_y" }
-ReturnId = { 5"_x" }
+delete = { 1"z" }
