@@ -5,6 +5,19 @@
 
 #include "WrapPointer.h"
 
+class Node;
+class Item {
+public:
+	int x;
+	WrapPointer<Node> next;
+public:
+	Item() { }
+	Item(const int _x, const WrapPointer<Node> _next)
+	{
+		this->x = _x;
+		this->next = _next;
+	}
+};
 
 class Node {
 public:
@@ -49,9 +62,13 @@ int main(void)
 
 	x->next = y;
 	y->next = x;
-	z = y;
-	x.Delete();
+	z = y + 1;
+	
 	y.Delete();
+	
+	z = z - 1;
+	x.Delete();
+	//
 	z.Delete();
 
 	return 0;
