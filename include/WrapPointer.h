@@ -41,8 +41,10 @@ public:
 		this->name = str;
 	}
 private:
+	long long offset = 0;
 	std::string name; // const?
 	T* ptr = nullptr;
+	long long ppid = -1;
 	long long pid; // const?
 
 	inline static std::set<long long> removed_tids;
@@ -64,12 +66,6 @@ private:
 		tids.erase(this->pid);
 	}
 private:
-	WrapPointer(T* _ptr, const std::string& _name="")
-		: ptr(_ptr), name(_name)
-	{
-		pid = GetId();
-		FileManager::WriteLine(std::string("New = { ") + wiz::toStr(pid) + "\"" + name + "\"" + " }");
-	}
 	WrapPointer(long long _pid, T* _ptr, const std::string& _name = "")
 		: ptr(_ptr), name(_name)
 	{
@@ -107,16 +103,31 @@ public:
 	const T* operator->() const;
 	WrapPointer& operator=(const WrapPointer& other);
 	bool operator!() const;
-	operator bool() const;
+	explicit operator bool() const;
 	bool operator==(const WrapPointer& other) const;
 	bool operator!=(const WrapPointer& other) const;
+	WrapPointer operator+(const long long x) const {
+		WrapPointer temp;
+		temp.pid = GetId();
+		temp.name = "_" + this->name;
+		temp.ppid = this->pid;
+		temp.offset = x;
+
+		FileManager::WriteLine(std::string("NewLocal = { \n") + wiz::toStr(temp.pid) + "%" + wiz::toStr(temp.ppid) + "%" + wiz::toStr(temp.offset) 
+			+ "\"" + temp.name + "\"" + " } \n");
+
+		return temp;
+	}
+	WrapPointer operator-(const long long x) const {
+		return (*this) + (-x);
+	}
 public:
 	static WrapPointer NewArray(const std::string& name, size_t n);
 	static WrapPointer NewArray(size_t n);
 	void Delete();
 	void DeleteArray();
 	
-	static WrapPointer NewWithName()
+	static WrapPointer New()
 	{
 		auto pid = GetId();
 		FileManager::WriteLine(std::string("New = { \n") + wiz::toStr(pid) + " = { \n");
