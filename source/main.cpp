@@ -50,19 +50,28 @@ public:
 };
 
 void memory_leak_test() {
-	//
+	FileManager::fileName = "output1.txt";
+	FileManager::ClearFile();
+
+
 }
 void double_delete_test() {
-	//
+	FileManager::fileName = "output2.txt";
+	FileManager::ClearFile();
+
+
 }
 void array_test() {
-	//
+	FileManager::fileName = "output3.txt";
+	FileManager::ClearFile();
+
+
 }
 
 
 int main(void)
 {
-	FileManager::fileName = "output.txt"; 
+	FileManager::fileName = "output.txt";
 	FileManager::ClearFile();
 
 	// Test
@@ -79,20 +88,26 @@ int main(void)
 	y.Delete();
 	//x.Delete();
 
-	x = WrapPointer<Node>::NewWithName("a", 3); 
+	x = WrapPointer<Node>::NewWithName("a", 3);
 	y = WrapPointer<Node>::NewWithName("b", 5);
 
 	x->parent = y;
 	y->parent = x;
 	z[0].parent = y + 1;
-	
+
 	//y.Delete();
-	
+
 	z[1].parent = z[0].parent - 1;
 	//z[10] = z[1];
 	x.Delete();
 	z[1].parent.Delete();
 	z.DeleteArray();
+	
+	
+
+	memory_leak_test();
+	double_delete_test();
+	array_test();
 
 	return 0;
 }
