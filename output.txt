@@ -23,24 +23,164 @@ NewArray = { 1"z" 10
 NewEmpty = { 10"" }
 NewEmpty = { 11"" }
 NewEmpty = { 12"" }
-NewEmpty = { 13"" }
+New = { 
+13 = { 
+
 NewEmpty = { 14"" }
+ } } 
+
+NewFromOther = { 15"_" = 13"" }
+ReturnId = { 13"" }
+assign = { 
+12"" = 15"_"  
+ } 
+ReturnId = { 15"_" }
+NewEmpty = { 13"" }
 NewEmpty = { 15"" }
 NewEmpty = { 16"" }
-NewEmpty = { 17"" }
+New = { 
+17 = { 
+
 NewEmpty = { 18"" }
+ } } 
+
+NewFromOther = { 19"_" = 17"" }
+ReturnId = { 17"" }
+assign = { 
+16"" = 19"_"  
+ } 
+ReturnId = { 19"_" }
+NewEmpty = { 17"" }
 NewEmpty = { 19"" }
+NewEmpty = { 20"" }
+New = { 
+21 = { 
+
+NewEmpty = { 22"" }
+ } } 
+
+NewFromOther = { 23"_" = 21"" }
+ReturnId = { 21"" }
+assign = { 
+20"" = 23"_"  
+ } 
+ReturnId = { 23"_" }
+NewEmpty = { 21"" }
+NewEmpty = { 23"" }
+NewEmpty = { 24"" }
+New = { 
+25 = { 
+
+NewEmpty = { 26"" }
+ } } 
+
+NewFromOther = { 27"_" = 25"" }
+ReturnId = { 25"" }
+assign = { 
+24"" = 27"_"  
+ } 
+ReturnId = { 27"_" }
+NewEmpty = { 25"" }
+NewEmpty = { 27"" }
+NewEmpty = { 28"" }
+New = { 
+29 = { 
+
+NewEmpty = { 30"" }
+ } } 
+
+NewFromOther = { 31"_" = 29"" }
+ReturnId = { 29"" }
+assign = { 
+28"" = 31"_"  
+ } 
+ReturnId = { 31"_" }
+NewEmpty = { 29"" }
+NewEmpty = { 31"" }
+NewEmpty = { 32"" }
+New = { 
+33 = { 
+
+NewEmpty = { 34"" }
+ } } 
+
+NewFromOther = { 35"_" = 33"" }
+ReturnId = { 33"" }
+assign = { 
+32"" = 35"_"  
+ } 
+ReturnId = { 35"_" }
+NewEmpty = { 33"" }
+NewEmpty = { 35"" }
+NewEmpty = { 36"" }
+New = { 
+37 = { 
+
+NewEmpty = { 38"" }
+ } } 
+
+NewFromOther = { 39"_" = 37"" }
+ReturnId = { 37"" }
+assign = { 
+36"" = 39"_"  
+ } 
+ReturnId = { 39"_" }
+NewEmpty = { 37"" }
+NewEmpty = { 39"" }
+NewEmpty = { 40"" }
+New = { 
+41 = { 
+
+NewEmpty = { 42"" }
+ } } 
+
+NewFromOther = { 43"_" = 41"" }
+ReturnId = { 41"" }
+assign = { 
+40"" = 43"_"  
+ } 
+ReturnId = { 43"_" }
+NewEmpty = { 41"" }
+NewEmpty = { 43"" }
+NewEmpty = { 44"" }
+New = { 
+45 = { 
+
+NewEmpty = { 46"" }
+ } } 
+
+NewFromOther = { 47"_" = 45"" }
+ReturnId = { 45"" }
+assign = { 
+44"" = 47"_"  
+ } 
+ReturnId = { 47"_" }
+NewEmpty = { 45"" }
+NewEmpty = { 47"" }
+NewEmpty = { 48"" }
+New = { 
+49 = { 
+
+NewEmpty = { 50"" }
+ } } 
+
+NewFromOther = { 51"_" = 49"" }
+ReturnId = { 49"" }
+assign = { 
+48"" = 51"_"  
+ } 
+ReturnId = { 51"_" }
  }
 
-NewFromOther = { 20"_z" = 1"z" }
+NewFromOther = { 49"_z" = 1"z" }
 ReturnId = { 1"z" }
 access = { 5"_x" } 
 assign = { 
-4"next" = 9"_y"  
+2"parent" = 9"_y"  
  } 
 access = { 9"_y" } 
 assign = { 
-8"next" = 5"_x"  
+6"parent" = 5"_x"  
  } 
 delete = { 5"_x" }
 ReturnId = { 4"next" }
@@ -72,58 +212,80 @@ NewEmpty = { 7"" }
 NewEmpty = { 8"" }
  } } 
 
-NewFromOther = { 21"_b" = 1"b" }
+NewFromOther = { 51"_b" = 1"b" }
 ReturnId = { 1"b" }
 assign = { 
-9"_y" = 21"_b"  
+9"_y" = 51"_b"  
  } 
-ReturnId = { 21"_b" }
+ReturnId = { 51"_b" }
 access = { 5"_x" } 
 assign = { 
-4"next" = 9"_y"  
+2"parent" = 9"_y"  
  } 
 access = { 9"_y" } 
 assign = { 
-8"next" = 5"_x"  
+6"parent" = 5"_x"  
  } 
 NewEmpty = { 1"" }
 NewLocal = { 
-21%9%1"__y" } 
+51%9%1"__y" } 
 
-NewFromOther = { 22"___y" = 21"__y" }
-ReturnId = { 21"__y" }
-access_array = {20"_z" 0 } 
+NewFromOther = { 52"___y" = 51"__y" }
+ReturnId = { 51"__y" }
+access_array = { 49"_z" 0 } 
 assign = { 
-10"" = 22"___y"  
+10"parent" = 52"___y"  
  } 
-ReturnId = { 22"___y" }
-access_array = {20"_z" 0 } 
-NewEmpty = { 21"" }
+ReturnId = { 52"___y" }
+access_array = { 49"_z" 0 } 
+NewEmpty = { 51"" }
 NewLocal = { 
-22%10%-1"_" } 
+52%10%-1"_parent" } 
 
-NewFromOther = { 23"__" = 22"_" }
-ReturnId = { 22"_" }
-access_array = {20"_z" 1 } 
+NewFromOther = { 53"__parent" = 52"_parent" }
+ReturnId = { 52"_parent" }
+access_array = { 49"_z" 1 } 
 assign = { 
-11"" = 23"__"  
+13"parent" = 53"__parent"  
  } 
-ReturnId = { 23"__" }
+ReturnId = { 53"__parent" }
 delete = { 5"_x" }
 ReturnId = { 4"next" }
 ReturnId = { 3"child" }
 ReturnId = { 2"parent" }
-delete[] = { 20"_z" }
-ReturnId = { 19"" }
-ReturnId = { 18"" }
-ReturnId = { 17"" }
-ReturnId = { 16"" }
-ReturnId = { 15"" }
-ReturnId = { 14"" }
-ReturnId = { 13"" }
-ReturnId = { 12"" }
-ReturnId = { 11"" }
-ReturnId = { 10"" }
-ReturnId = { 20"_z" }
+access_array = { 49"_z" 1 } 
+delete = { 13"parent" }
+delete[] = { 49"_z" }
+ReturnId = { 48"next" }
+ReturnId = { 47"child" }
+ReturnId = { 45"parent" }
+ReturnId = { 44"next" }
+ReturnId = { 43"child" }
+ReturnId = { 41"parent" }
+ReturnId = { 40"next" }
+ReturnId = { 39"child" }
+ReturnId = { 37"parent" }
+ReturnId = { 36"next" }
+ReturnId = { 35"child" }
+ReturnId = { 33"parent" }
+ReturnId = { 32"next" }
+ReturnId = { 31"child" }
+ReturnId = { 29"parent" }
+ReturnId = { 28"next" }
+ReturnId = { 27"child" }
+ReturnId = { 25"parent" }
+ReturnId = { 24"next" }
+ReturnId = { 23"child" }
+ReturnId = { 21"parent" }
+ReturnId = { 20"next" }
+ReturnId = { 19"child" }
+ReturnId = { 17"parent" }
+ReturnId = { 16"next" }
+ReturnId = { 15"child" }
+ReturnId = { 13"parent" }
+ReturnId = { 12"next" }
+ReturnId = { 11"child" }
+ReturnId = { 10"parent" }
+ReturnId = { 49"_z" }
 ReturnId = { 9"_y" }
 ReturnId = { 5"_x" }
