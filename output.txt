@@ -18,7 +18,22 @@ NewEmpty = { 8"" }
 
 NewFromOther = { 9"_y" = 1"y" }
 ReturnId = { 1"y" }
-NewEmpty = { 1"z" }
+NewArray = { 1"z" 10
+
+NewEmpty = { 10"" }
+NewEmpty = { 11"" }
+NewEmpty = { 12"" }
+NewEmpty = { 13"" }
+NewEmpty = { 14"" }
+NewEmpty = { 15"" }
+NewEmpty = { 16"" }
+NewEmpty = { 17"" }
+NewEmpty = { 18"" }
+NewEmpty = { 19"" }
+ }
+
+NewFromOther = { 20"_z" = 1"z" }
+ReturnId = { 1"z" }
 access = { 5"_x" } 
 assign = { 
 4"next" = 9"_y"  
@@ -36,50 +51,79 @@ ReturnId = { 8"next" }
 ReturnId = { 7"child" }
 ReturnId = { 6"parent" }
 New = { 
-2"a" = { 
+1"a" = { 
 
+NewEmpty = { 2"" }
 NewEmpty = { 3"" }
 NewEmpty = { 4"" }
-NewEmpty = { 6"" }
  } } 
 
-NewFromOther = { 7"_a" = 2"a" }
-ReturnId = { 2"a" }
+NewFromOther = { 6"_a" = 1"a" }
+ReturnId = { 1"a" }
 assign = { 
-5"_x" = 7"_a"  
+5"_x" = 6"_a"  
  } 
-ReturnId = { 7"_a" }
+ReturnId = { 6"_a" }
 New = { 
-2"b" = { 
+1"b" = { 
 
+NewEmpty = { 6"" }
 NewEmpty = { 7"" }
 NewEmpty = { 8"" }
-NewEmpty = { 10"" }
  } } 
 
-NewFromOther = { 11"_b" = 2"b" }
-ReturnId = { 2"b" }
+NewFromOther = { 21"_b" = 1"b" }
+ReturnId = { 1"b" }
 assign = { 
-9"_y" = 11"_b"  
+9"_y" = 21"_b"  
  } 
-ReturnId = { 11"_b" }
+ReturnId = { 21"_b" }
 access = { 5"_x" } 
 assign = { 
-6"next" = 9"_y"  
+4"next" = 9"_y"  
  } 
 access = { 9"_y" } 
 assign = { 
-10"next" = 5"_x"  
+8"next" = 5"_x"  
  } 
+NewEmpty = { 1"" }
+NewLocal = { 
+21%9%1"__y" } 
+
+NewFromOther = { 22"___y" = 21"__y" }
+ReturnId = { 21"__y" }
+access_array = {20"_z" 0 } 
 assign = { 
-1"z" = 9"_y"  
+10"" = 22"___y"  
  } 
+ReturnId = { 22"___y" }
+access_array = {20"_z" 0 } 
+NewEmpty = { 21"" }
+NewLocal = { 
+22%10%-1"_" } 
+
+NewFromOther = { 23"__" = 22"_" }
+ReturnId = { 22"_" }
+access_array = {20"_z" 1 } 
+assign = { 
+11"" = 23"__"  
+ } 
+ReturnId = { 23"__" }
 delete = { 5"_x" }
-ReturnId = { 6"next" }
-ReturnId = { 4"child" }
-ReturnId = { 3"parent" }
-delete = { 9"_y" }
-ReturnId = { 10"next" }
-ReturnId = { 8"child" }
-ReturnId = { 7"parent" }
-delete = { 1"z" }
+ReturnId = { 4"next" }
+ReturnId = { 3"child" }
+ReturnId = { 2"parent" }
+delete[] = { 20"_z" }
+ReturnId = { 19"" }
+ReturnId = { 18"" }
+ReturnId = { 17"" }
+ReturnId = { 16"" }
+ReturnId = { 15"" }
+ReturnId = { 14"" }
+ReturnId = { 13"" }
+ReturnId = { 12"" }
+ReturnId = { 11"" }
+ReturnId = { 10"" }
+ReturnId = { 20"_z" }
+ReturnId = { 9"_y" }
+ReturnId = { 5"_x" }
