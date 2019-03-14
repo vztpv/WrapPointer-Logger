@@ -48,7 +48,7 @@ int main(void)
 	// Test
 	WrapPointer<Node> x = WrapPointer<Node>::NewWithName("x", 3);
 	WrapPointer<Node> y = WrapPointer<Node>::NewWithName("y", 5);
-	WrapPointer<Node> z("z");
+	WrapPointer<WrapPointer<Node>> z = WrapPointer<WrapPointer<Node>>::NewArray("z", 10);
 
 	x->next = y;
 	y->next = x;
@@ -62,14 +62,15 @@ int main(void)
 
 	x->next = y;
 	y->next = x;
-	z = y + 1;
+	z[0] = y + 1;
 	
-	y.Delete();
+	//y.Delete();
 	
-	z = z - 1;
+	z[1] = z[0] - 1;
+
 	x.Delete();
 	//
-	z.Delete();
+	z.DeleteArray();
 
 	return 0;
 }
