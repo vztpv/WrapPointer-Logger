@@ -149,9 +149,11 @@ namespace wiz {
 		}
 	public:
 		T* data() {
+			//
 			return ptr;
 		}
 		const T* data() const {
+			//
 			return ptr;
 		}
 		T& operator*();
@@ -208,7 +210,7 @@ namespace wiz {
 		{
 			auto pid = GetId();
 			FileManager::WriteLine(std::string("New = { \n") + wiz::toStr(pid) + "\"" + name + "\"" + " = { \n");
-			auto x = WrapPointer<T>(pid, new T(name));
+			auto x = WrapPointer<T>(pid, new T(), name);
 			FileManager::WriteLine(std::string(" } } \n"));
 			return x;
 		}
