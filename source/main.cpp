@@ -35,7 +35,7 @@ public:
 	WrapPointer<Node2> next;
 public:
 	Node() {
-		next = WrapPointer<Node2>::New();
+		next = WrapPointer<Node2>::NewWithName("test");
 
 		parent.SetName("parent");
 		child.SetName("child");
@@ -46,6 +46,12 @@ public:
 		child.SetName("child");
 		next.SetName("next");
 		this->val = val;
+	}
+	~Node() {
+
+		if (next.data()) {
+			next.Delete();
+		}
 	}
 };
 
@@ -93,14 +99,15 @@ int main(void)
 
 	x->parent = y;
 	y->parent = x;
-	z[0].parent = y + 1;
+	z[1].parent = y + 1;
 
 	//y.Delete();
 
-	z[1].parent = z[0].parent - 1;
+	z[0].parent = y;
+	z[0].parent = z[1].parent;
 	//z[10] = z[1];
 	x.Delete();
-	z[1].parent.Delete();
+	z[0].parent.Delete();
 	z.DeleteArray();
 	
 	
