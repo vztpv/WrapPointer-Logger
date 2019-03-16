@@ -6,7 +6,9 @@ NewEmpty = { 3"" }
 NewEmpty = { 4"" }
  } } 
 
-NewFromOther = { 5"_x" = 1"x" }
+NewFromOther = { 
+5"_x" = 1"x" = } 
+
 ReturnId = { 1"x" }
 New = { 
 1"y" = { 
@@ -16,7 +18,9 @@ NewEmpty = { 7"" }
 NewEmpty = { 8"" }
  } } 
 
-NewFromOther = { 9"_y" = 1"y" }
+NewFromOther = { 
+9"_y" = 1"y" = } 
+
 ReturnId = { 1"y" }
 NewArray = { 1"z" 10
 
@@ -29,7 +33,9 @@ New = {
 NewEmpty = { 14"" }
  } } 
 
-NewFromOther = { 15"_test" = 13"test" }
+NewFromOther = { 
+15"_test" = 13"test" = } 
+
 ReturnId = { 13"test" }
 assign = { 
 12"" = 15"_test"  
@@ -44,7 +50,9 @@ New = {
 NewEmpty = { 18"" }
  } } 
 
-NewFromOther = { 19"_test" = 17"test" }
+NewFromOther = { 
+19"_test" = 17"test" = } 
+
 ReturnId = { 17"test" }
 assign = { 
 16"" = 19"_test"  
@@ -59,7 +67,9 @@ New = {
 NewEmpty = { 22"" }
  } } 
 
-NewFromOther = { 23"_test" = 21"test" }
+NewFromOther = { 
+23"_test" = 21"test" = } 
+
 ReturnId = { 21"test" }
 assign = { 
 20"" = 23"_test"  
@@ -74,7 +84,9 @@ New = {
 NewEmpty = { 26"" }
  } } 
 
-NewFromOther = { 27"_test" = 25"test" }
+NewFromOther = { 
+27"_test" = 25"test" = } 
+
 ReturnId = { 25"test" }
 assign = { 
 24"" = 27"_test"  
@@ -89,7 +101,9 @@ New = {
 NewEmpty = { 30"" }
  } } 
 
-NewFromOther = { 31"_test" = 29"test" }
+NewFromOther = { 
+31"_test" = 29"test" = } 
+
 ReturnId = { 29"test" }
 assign = { 
 28"" = 31"_test"  
@@ -104,7 +118,9 @@ New = {
 NewEmpty = { 34"" }
  } } 
 
-NewFromOther = { 35"_test" = 33"test" }
+NewFromOther = { 
+35"_test" = 33"test" = } 
+
 ReturnId = { 33"test" }
 assign = { 
 32"" = 35"_test"  
@@ -119,7 +135,9 @@ New = {
 NewEmpty = { 38"" }
  } } 
 
-NewFromOther = { 39"_test" = 37"test" }
+NewFromOther = { 
+39"_test" = 37"test" = } 
+
 ReturnId = { 37"test" }
 assign = { 
 36"" = 39"_test"  
@@ -134,7 +152,9 @@ New = {
 NewEmpty = { 42"" }
  } } 
 
-NewFromOther = { 43"_test" = 41"test" }
+NewFromOther = { 
+43"_test" = 41"test" = } 
+
 ReturnId = { 41"test" }
 assign = { 
 40"" = 43"_test"  
@@ -149,7 +169,9 @@ New = {
 NewEmpty = { 46"" }
  } } 
 
-NewFromOther = { 47"_test" = 45"test" }
+NewFromOther = { 
+47"_test" = 45"test" = } 
+
 ReturnId = { 45"test" }
 assign = { 
 44"" = 47"_test"  
@@ -164,7 +186,9 @@ New = {
 NewEmpty = { 50"" }
  } } 
 
-NewFromOther = { 51"_test" = 49"test" }
+NewFromOther = { 
+51"_test" = 49"test" = } 
+
 ReturnId = { 49"test" }
 assign = { 
 48"" = 51"_test"  
@@ -172,134 +196,29 @@ assign = {
 ReturnId = { 51"_test" }
  }
 
-NewFromOther = { 49"_z" = 1"z" }
+NewFromOther = { 
+49"_z" = 1"z" = } 
+
 ReturnId = { 1"z" }
-access = { 5"_x" } 
-assign = { 
-2"parent" = 9"_y"  
- } 
-access = { 9"_y" } 
-assign = { 
-6"parent" = 5"_x"  
- } 
-delete = { 5"_x" }
-ReturnId = { 4"next" }
-ReturnId = { 3"child" }
-ReturnId = { 2"parent" }
-delete = { 9"_y" }
-ReturnId = { 8"next" }
-ReturnId = { 7"child" }
-ReturnId = { 6"parent" }
-New = { 
-1"a" = { 
-
-NewEmpty = { 2"" }
-NewEmpty = { 3"" }
-NewEmpty = { 4"" }
- } } 
-
-NewFromOther = { 6"_a" = 1"a" }
-ReturnId = { 1"a" }
-assign = { 
-5"_x" = 6"_a"  
- } 
-ReturnId = { 6"_a" }
-New = { 
-1"b" = { 
-
-NewEmpty = { 6"" }
-NewEmpty = { 7"" }
-NewEmpty = { 8"" }
- } } 
-
-NewFromOther = { 51"_b" = 1"b" }
-ReturnId = { 1"b" }
-assign = { 
-9"_y" = 51"_b"  
- } 
-ReturnId = { 51"_b" }
-access = { 5"_x" } 
-assign = { 
-2"parent" = 9"_y"  
- } 
-access = { 9"_y" } 
-assign = { 
-6"parent" = 5"_x"  
- } 
 NewEmpty = { 1"" }
-NewLocal = { 
-51%9%1"__y" } 
+New = { 
+51"k" = { 
 
-NewFromOther = { 52"___y" = 51"__y" }
-ReturnId = { 51"__y" }
-access_array = { 49"_z" 1 } 
+NewEmpty = { 52"" }
+NewEmpty = { 53"" }
+NewEmpty = { 54"" }
+ } } 
+
+NewFromOther = { 
+55"_k" = 51"k" = } 
+
+ReturnId = { 51"k" }
 assign = { 
-13"parent" = 52"___y"  
+1"" = 55"_k"  
  } 
-ReturnId = { 52"___y" }
-access_array = { 49"_z" 0 } 
-assign = { 
-10"parent" = 9"_y"  
- } 
-access_array = { 49"_z" 1 } 
-access_array = { 49"_z" 0 } 
-assign = { 
-10"parent" = 13"parent"  
- } 
-delete = { 5"_x" }
-ReturnId = { 4"next" }
-ReturnId = { 3"child" }
-ReturnId = { 2"parent" }
-access_array = { 49"_z" 0 } 
-delete = { 10"parent" }
-delete[] = { 49"_z" }
-delete = { 48"next" }
-ReturnId = { 50"" }
-ReturnId = { 48"next" }
-ReturnId = { 47"child" }
-ReturnId = { 45"parent" }
-delete = { 44"next" }
-ReturnId = { 46"" }
-ReturnId = { 44"next" }
-ReturnId = { 43"child" }
-ReturnId = { 41"parent" }
-delete = { 40"next" }
-ReturnId = { 42"" }
-ReturnId = { 40"next" }
-ReturnId = { 39"child" }
-ReturnId = { 37"parent" }
-delete = { 36"next" }
-ReturnId = { 38"" }
-ReturnId = { 36"next" }
-ReturnId = { 35"child" }
-ReturnId = { 33"parent" }
-delete = { 32"next" }
-ReturnId = { 34"" }
-ReturnId = { 32"next" }
-ReturnId = { 31"child" }
-ReturnId = { 29"parent" }
-delete = { 28"next" }
-ReturnId = { 30"" }
-ReturnId = { 28"next" }
-ReturnId = { 27"child" }
-ReturnId = { 25"parent" }
-delete = { 24"next" }
-ReturnId = { 26"" }
-ReturnId = { 24"next" }
-ReturnId = { 23"child" }
-ReturnId = { 21"parent" }
-delete = { 20"next" }
-ReturnId = { 22"" }
-ReturnId = { 20"next" }
-ReturnId = { 19"child" }
-ReturnId = { 17"parent" }
-delete = { 16"next" }
-ReturnId = { 18"" }
-ReturnId = { 16"next" }
-ReturnId = { 15"child" }
-ReturnId = { 13"parent" }
-delete = { 12"next" }
-ReturnId = { 14"" }
-ReturnId = { 12"next" }
-ReturnId = { 11"child" }
-ReturnId = { 10"parent" }
+delete = { 55"_k" }
+ReturnId = { 54"next" }
+ReturnId = { 53"child" }
+ReturnId = { 52"parent" }
+ReturnId = { 55"_k" }
+access = { 1"" } 
