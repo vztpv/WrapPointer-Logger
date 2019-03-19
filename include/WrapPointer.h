@@ -57,6 +57,8 @@ namespace wiz {
 
 		return tempString;
 	}
+	
+
 	class FileManager
 	{
 		static std::string replace(const std::string& str, const std::string& str1, const std::string& str2)
@@ -80,7 +82,8 @@ namespace wiz {
 			return temp;
 		}
 	public:
-		inline static std::string fileName;
+		static std::string fileName;
+
 		static void ClearFile() {
 			std::ofstream outFile;
 			outFile.open(fileName);
@@ -108,9 +111,9 @@ namespace wiz {
 
 	};
 
-	inline static std::set<long long> removed_tids;
-	inline static std::set<long long> tids;
-	inline static long long tid = 0; // total
+	static std::set<long long> removed_tids;
+	static std::set<long long> tids;
+	static long long tid = 0; // total
 
 
 
@@ -177,7 +180,7 @@ namespace wiz {
 			pid = GetId();
 			
 			FileManager::WriteLine(std::string("NewFromOther = { \n") + wiz::toStr(pid) + "\"" + name + "\"" + " = "
-					+ wiz::toStr(other.pid) + "\"" + other.name + "\" = } \n");
+					+ wiz::toStr(other.pid) + "\"" + other.name + "\" } \n");
 
 			ptr = other.ptr;
 			
@@ -343,6 +346,7 @@ namespace wiz {
 			FileManager::WriteLine(std::string(" } } \n"));
 			return temp;
 		}
+
 	private:
 		//static void* operator new(size_t size) = delete;
 		//static void* operator new[](size_t size) = delete;
@@ -352,12 +356,12 @@ namespace wiz {
 
 	template <class T>
 	T& WrapPointer<T>::operator*() {
-		FileManager::WriteLine(std::string() + "access = { " + wiz::toStr(pid) + "\"\"" + " } ");
+		FileManager::WriteLine(std::string() + "access = { " + wiz::toStr(pid) + "\"" + name + "\"" + " } ");
 		return *ptr;
 	}
 	template <class T>
 	const T& WrapPointer<T>::operator*() const {
-		FileManager::WriteLine(std::string() + "access = { " + wiz::toStr(pid) + "\"\"" + " } ");
+		FileManager::WriteLine(std::string() + "access = { " + wiz::toStr(pid) + "\"" + name + "\"" + " } ");
 		return *ptr;
 	}
 	template <class T>
@@ -461,5 +465,9 @@ namespace wiz {
 		}
 	}
 }
+
+
+std::string wiz::FileManager::fileName;
+
 
 #endif
