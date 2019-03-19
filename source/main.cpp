@@ -87,7 +87,8 @@ int main(void)
 	WrapPointer<Node> z = WrapPointer<Node>::NewArray("z", 10);
 	WrapPointer<Node> a;
 	{
-		WrapPointer<Node> k = WrapPointer<Node>::NewLocalWithName("k", 3);
+		// no need!! - remove Local~~
+		WrapPointer<Node> k = WrapPointer<Node>::NewLocalWithName("k", 3); 
 
 		a = k; // group <- add "local", "global"?
 	}
