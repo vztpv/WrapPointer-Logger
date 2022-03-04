@@ -233,6 +233,7 @@ namespace wiz {
 			temp.name = "_" + this->name;
 			temp.ppid = this->pid;
 			temp.offset = x;
+			temp.ptr = this->ptr + x;
 
 			FileManager::WriteLine(std::string("NewPlus = { \n") + wiz::toStr(temp.pid) + "%" + wiz::toStr(temp.ppid) + "%" + wiz::toStr(temp.offset)
 				+ "\"" + temp.name + "\"" + " } \n");
