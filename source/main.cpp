@@ -85,6 +85,10 @@ int main(void)
 	WrapPointer<Node> y = WrapPointer<Node>::NewWithName("y", 5);
 
 	WrapPointer<Node> z = WrapPointer<Node>::NewArray("z", 10);
+	WrapPointer<Node> zz = z + 3;
+
+	zz[6].parent = x;
+
 	WrapPointer<Node> a;
 	{
 		// no need!! - remove Local~~
@@ -93,7 +97,7 @@ int main(void)
 		a = k; // group <- add "local", "global"?
 	}
 	
-	a->parent = x;
+	//a->parent = x;
 
 	x->parent = y;
 	y->parent = x;
@@ -107,7 +111,7 @@ int main(void)
 
 	x->parent = y;
 	y->parent = x;
-	z[1].parent = y + 1;
+	z[1].parent = y;
 
 	//y.Delete();
 
