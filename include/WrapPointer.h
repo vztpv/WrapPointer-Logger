@@ -126,13 +126,10 @@ namespace wiz {
 		}
 	private:
 		bool make = false;
-		bool maked = false;
 		bool is_array = false;
 		bool is_local = false;
-		long long offset = 0;
 		std::string name; // const?
 		T* ptr = nullptr;
-		long long ppid = -1; // for + or -
 		long long pid = -2; // const?
 
 		static long long GetId() {
@@ -164,19 +161,14 @@ namespace wiz {
 		}
 	public:
 		WrapPointer(const WrapPointer& other) {
-			if (other.maked) {
-				std::cout << "*this <- other, other is already maked\n";
-				exit(-1);
+			if (other.make) {
+				is_local = other.is_local;
 			}
-			is_local = other.is_local;
+
 			is_array = other.is_array;
 
-			if (is_local) {
-				maked = true;
-			}
-
 			name = "_" + other.name;
-			ppid = other.ppid;
+
 			pid = GetId();
 			
 			FileManager::WriteLine(std::string("NewFromOther = { \n") + wiz::toStr(pid) + "\"" + name + "\"" + " = "
@@ -231,11 +223,11 @@ namespace wiz {
 			WrapPointer temp;
 			temp.pid = GetId();
 			temp.name = "_" + this->name;
-			temp.ppid = this->pid;
-			temp.offset = x;
+			long long ppid = this->pid;
+			long long offset = x;
 			temp.ptr = this->ptr + x;
 
-			FileManager::WriteLine(std::string("NewPlus = { \n") + wiz::toStr(temp.pid) + "%" + wiz::toStr(temp.ppid) + "%" + wiz::toStr(temp.offset)
+			FileManager::WriteLine(std::string("NewPlus = { \n") + wiz::toStr(temp.pid) + "%" + wiz::toStr(ppid) + "%" + wiz::toStr(offset)
 				+ "\"" + temp.name + "\"" + " } \n");
 
 			return temp;
@@ -383,7 +375,6 @@ namespace wiz {
 		FileManager::WriteLine(std::string() + " } ");
 
 		this->ptr = other.ptr;
-		
 
 		this->is_array = other.is_array;
 
