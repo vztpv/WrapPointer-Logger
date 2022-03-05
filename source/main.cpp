@@ -85,16 +85,19 @@ int main(void)
 	WrapPointer<Node> y = WrapPointer<Node>::NewWithName("y", 5);
 
 	WrapPointer<Node> z = WrapPointer<Node>::NewArray("z", 10);
-	WrapPointer<Node> zz = z + 3;
+	WrapPointer<Node> zz = z + 4;
 
-	zz[6].parent = x;
+	//zz[5].parent = WrapPointer<Node>::NewWithName("zz[5]", 6);
 
 	WrapPointer<Node> a;
 	{
 		// no need!! - remove Local~~
 		WrapPointer<Node> k = WrapPointer<Node>::NewLocalWithName("k", 3); 
+		WrapPointer<Node> k2 = k;
 
 		a = k; // group <- add "local", "global"?
+		
+		k2.Delete();
 	}
 	
 	//a->parent = x;
