@@ -10,7 +10,7 @@ using namespace wiz;
 class Node;
 class Item {
 public:
-	int x;
+	int x = 0;
 	WrapPointer<Node> next;
 public:
 	Item() { }
@@ -29,7 +29,7 @@ public:
 
 class Node {
 public:
-	int val;
+ 	int val = 0;
 	WrapPointer<Node> parent;
 	WrapPointer<Node> child;
 	WrapPointer<Node2> next;
@@ -74,14 +74,61 @@ void array_test() {
 
 }
 
+inline WrapPointer<Node> func_return() {
+	return WrapPointer<Node>::NewWithName("x", 3);
+}
 
 int main(void)
 {
 	FileManager::fileName = "output.txt";
 	FileManager::ClearFile();
 
+	{
+		WrapPointer<int> z;
+		z = WrapPointer<int>::New(5);
+
+		{
+			int x = 5;
+			WrapPointer<int> y;
+			WrapPointer<int>::NewLocal(&y, &x);
+
+			*z = *y;
+
+			*y = *z;
+
+			z = y;
+		}
+
+		//z.Delete();
+	}
+
+
+
 	// Test
-	WrapPointer<Node> x = WrapPointer<Node>::NewWithName("x", 3);
+	WrapPointer<int> i = WrapPointer<int>::New(1234);
+	WrapPointer<int> j = WrapPointer<int>::New(222);
+
+	{
+		WrapPointer<WrapPointer<int>> T;
+		
+		WrapPointer<WrapPointer<int>>::NewLocalWithName(&T, "chk"); 
+
+		*T = i; // T = &i; 
+
+		std::cout << (**T) << "\n";
+
+
+		i = *T;
+
+		//T->Delete();
+	}
+
+	i.Delete();
+	j.Delete();
+
+
+	WrapPointer<Node> x;
+	x = func_return(); // WrapPointer<Node>::NewWithName("x", 3);
 	WrapPointer<Node> y = WrapPointer<Node>::NewWithName("y", 5);
 
 	WrapPointer<Node> z = WrapPointer<Node>::NewArray("z", 10);
@@ -92,12 +139,13 @@ int main(void)
 	WrapPointer<Node> a;
 	{
 		// no need!! - remove Local~~
-		WrapPointer<Node> k = WrapPointer<Node>::NewLocalWithName("k", 3); 
+		WrapPointer<Node> k;
+		WrapPointer<Node>::NewLocalWithName(&k, "k", Node(3));
 		WrapPointer<Node> k2 = k;
 
 		a = k; // group <- add "local", "global"?
 		
-		k2.Delete();
+		//k2.Delete();
 	}
 	
 	//a->parent = x;
@@ -109,8 +157,8 @@ int main(void)
 	y.Delete();
 	//x.Delete();
 
-	x = WrapPointer<Node>::NewWithName("a", 3);
-	y = WrapPointer<Node>::NewWithName("b", 5);
+	x = WrapPointer<Node>::NewWithName("a", Node(3));
+	y = WrapPointer<Node>::NewWithName("b", Node(5));
 
 	x->parent = y;
 	y->parent = x;
@@ -124,12 +172,6 @@ int main(void)
 	x.Delete();
 	z[0].parent.Delete();
 	z.DeleteArray();
-	
-	
-
-	memory_leak_test();
-	double_delete_test();
-	array_test();
 
 	return 0;
 }
