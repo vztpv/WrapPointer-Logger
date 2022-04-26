@@ -35,7 +35,7 @@ public:
 	WrapPointer<Node2> next;
 public:
 	Node() {
-		next = WrapPointer<Node2>::NewWithName("test");
+		 WrapPointer<Node2>::NewWithName(&next, "test");
 
 		parent.SetName("parent");
 		child.SetName("child");
@@ -74,104 +74,150 @@ void array_test() {
 
 }
 
-inline WrapPointer<Node> func_return() {
-	return WrapPointer<Node>::NewWithName("x", 3);
-}
 
 int main(void)
 {
-	FileManager::fileName = "output.txt";
+	FileManager::fileName = "output1.txt";
 	FileManager::ClearFile();
-
-	{
-		WrapPointer<int> z;
-		z = WrapPointer<int>::New(5);
-
-		{
-			int x = 5;
-			WrapPointer<int> y;
-			WrapPointer<int>::NewLocal(&y, &x);
-
-			*z = *y;
-
-			*y = *z;
-
-			z = y;
-		}
-
-		//z.Delete();
-	}
-
-
-
-	// Test
-	WrapPointer<int> i = WrapPointer<int>::New(1234);
-	WrapPointer<int> j = WrapPointer<int>::New(222);
-
-	{
-		WrapPointer<WrapPointer<int>> T;
-		
-		WrapPointer<WrapPointer<int>>::NewLocalWithName(&T, "chk"); 
-
-		*T = i; // T = &i; 
-
-		std::cout << (**T) << "\n";
-
-
-		i = *T;
-
-		//T->Delete();
-	}
-
-	i.Delete();
-	j.Delete();
-
-
-	WrapPointer<Node> x;
-	x = func_return(); // WrapPointer<Node>::NewWithName("x", 3);
-	WrapPointer<Node> y = WrapPointer<Node>::NewWithName("y", 5);
-
-	WrapPointer<Node> z = WrapPointer<Node>::NewArray("z", 10);
-	WrapPointer<Node> zz = z + 4;
-
-	//zz[5].parent = WrapPointer<Node>::NewWithName("zz[5]", 6);
-
-	WrapPointer<Node> a;
-	{
-		// no need!! - remove Local~~
-		WrapPointer<Node> k;
-		WrapPointer<Node>::NewLocalWithName(&k, "k", Node(3));
-		WrapPointer<Node> k2 = k;
-
-		a = k; // group <- add "local", "global"?
-		
-		//k2.Delete();
-	}
 	
-	//a->parent = x;
+	
+	for (int tr = 0; tr < 1000; ++tr) {
 
-	x->parent = y;
-	y->parent = x;
+		{/*
+			{
+				WrapPointer<WrapPointer<int>> k;
+				WrapPointer<WrapPointer<int>>::NewArray(&k, 10);
 
-	x.Delete();
-	y.Delete();
-	//x.Delete();
+				for (int i = 0; i < 10; ++i) {
+					WrapPointer<int>::NewArray(&k[i], 10);
+				}
 
-	x = WrapPointer<Node>::NewWithName("a", Node(3));
-	y = WrapPointer<Node>::NewWithName("b", Node(5));
+				for (int i = 0; i < 10; ++i) {
+					k[i].DeleteArray(); // line comment?
+				}
+				k.DeleteArray();
+				//k[9].DeleteArray();
+			}
 
-	x->parent = y;
-	y->parent = x;
-	z[1].parent = y;
+			
+			
 
-	//y.Delete();
+			// Test
+			WrapPointer<int> i;
+			WrapPointer<int>::New(&i, 1234);
+			WrapPointer<int> j;
+			WrapPointer<int>::New(&j, 222);
 
-	z[0].parent = y;
-	z[0].parent = z[1].parent;
-	//z[10] = z[1];
-	x.Delete();
-	z[0].parent.Delete();
-	z.DeleteArray();
+			{
+				WrapPointer<WrapPointer<int>> T;
+
+				WrapPointer<WrapPointer<int>>::NewLocalWithName(&T, "chk");
+
+				*T = i; // T = &i; 
+
+				std::cout << (**T) << "\n";
+
+
+				i = *T;
+
+				//T->Delete();
+
+			}
+
+			i.Delete();
+			j.Delete();
+
+
+			
+
+			{
+				WrapPointer<int> z;
+				WrapPointer<int>::New(&z, 5);
+
+				{
+					int x = 5;
+					WrapPointer<int> y;
+					WrapPointer<int>::NewLocal(&y, &x);
+
+					*z = *y;
+
+					*y = *z;
+
+					z.Delete();
+					z = y;
+				}
+
+				//z.Delete();
+			}
+*/
+		
+
+			/*WrapPointer<Node> a;
+			{
+				// no need!! - remove Local~~
+				WrapPointer<Node> k;
+				WrapPointer<Node>::NewLocalWithName(&k, "k", Node(3));
+				WrapPointer<Node> k2 = k;
+
+				a = k; // group <- add "local", "global"?
+
+				//k2.Delete();
+			}
+
+			//a->parent = x;
+			*/
+			/*
+			WrapPointer<Node> x;
+			WrapPointer<Node>::NewWithName(&x, "x", 3);
+			WrapPointer<Node> y;
+			WrapPointer<Node>::NewWithName(&y, "y", 5);
+
+			x->parent = y;
+			y->parent = x;
+
+			x.Delete();
+			y.Delete();
+			//x.Delete();
+
+			WrapPointer<Node>::NewWithName(&x, "a", Node(3));
+			WrapPointer<Node>::NewWithName(&y, "b", Node(5));
+
+			x->parent = y;
+			y->parent = x;
+			
+			x.Delete();
+
+			*/
+
+			WrapPointer<Node> z;
+			WrapPointer<Node>::NewArray(&z, "z", 10);
+			//WrapPointer<Node> zz("", true);
+			//WrapPointer<Node>::plus(&z, &zz, 4);
+
+
+			z.DeleteArray();
+
+			//zz[5].parent = WrapPointer<Node>::NewWithName("zz[5]", 6);
+			///z[1].parent = y;
+
+			//y.Delete();
+
+			///z[0].parent = y;
+			///z[0].parent = z[1].parent;
+			//z[10] = z[1];
+			///x.Delete();
+			///z[0].parent.Delete();
+			///z.DeleteArray();
+			/// 
+			std::cout << "chk " << removed_tids.size() << "\n";
+			std::cout << "chk " << tids.size() << "\n";
+			std::cout << "chk " << tid << "\n";
+		}
+		std::cout << ".................\n";
+		std::cout << "chk " << removed_tids.size() << "\n";
+		std::cout << "chk " << tids.size() << "\n";
+		std::cout << "chk " << tid << "\n";
+	}
 
 	return 0;
 }
