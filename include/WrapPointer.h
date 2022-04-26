@@ -128,21 +128,38 @@ namespace wiz {
 		bool is_make_static = false;
 		bool is_array = false;
 		bool is_static = false;
-		bool is_static2 = false;
+		bool is_make_static2 = false;
 
 		std::string name; // const?
 		T* ptr = nullptr;
 		long long pid = -2; // const?
 
 		static long long GetId() {
+			static bool chk_empty = true;
 			if (!removed_tids.empty()) {
 				long long x = *removed_tids.begin();
 				removed_tids.erase(x);
 				tids.insert(x);
+				chk_empty = false;
 				return x;
 			}
+			
+			if (!chk_empty) {
+				tid = 0;
+				std::cout << "test " << "\t";
+				std::cout << tids.size() << "\t";
+			}
+
+			while (tids.end() != tids.find(tid)) {
+				tid++;
+			}
+			
+			
+			std::cout << "tid " << tid << "\n";
+			
 			tids.insert(tid);
-			tid++;
+			
+			chk_empty = true;
 			return tid;
 		}
 		void ReturnId() {
@@ -150,7 +167,7 @@ namespace wiz {
 			tids.erase(this->pid);
 		}
 	private:
-		WrapPointer(long long _pid, T* _ptr, const std::string& _name = "")
+		WrapPointer(long long _pid, T* _ptr, const std::string& _name = "", bool no_log = false)
 			: ptr(_ptr), name(_name)
 		{
 			pid = _pid;
@@ -159,7 +176,6 @@ namespace wiz {
 			: name(_name)
 		{
 			pid = _pid;
-
 		}
 	public:
 		WrapPointer(const WrapPointer& other) {
@@ -170,24 +186,30 @@ namespace wiz {
 
 			name = "_" + other.name;
 
+			ptr = other.ptr;
+
 			pid = GetId();
 
 			FileManager::WriteLine(std::string("NewFromOther = { \n") + wiz::toStr(pid) + "\"" + name + "\"" + " = "
 				+ wiz::toStr(other.pid) + "\"" + other.name + "\" } \n");
 
-			ptr = other.ptr;
+		
 
 			//FileManager::WriteLine(std::string("NewFromOther = { ") + wiz::toStr(pid) + "\"" + name + "\"" + " = "
 			//	+ wiz::toStr(other.pid) + "\"" + other.name + "\"" + " }");
 		}
-		WrapPointer(const std::string& _name = "")
+		WrapPointer(const std::string& _name = "", bool no_log = false)
 			: name(_name)
 		{
+
+			if (no_log) { return; }
+
 			pid = GetId();
 			FileManager::WriteLine(std::string("NewEmpty = { ") + wiz::toStr(pid) + "\"" + name + "\"" + " }");
 		}
 
 		virtual ~WrapPointer() {
+
 			if (is_static && is_make_static) { // PTR x ; NEW(x); PTR<PTR> y = &x;
 				if (is_array) {
 					DeleteArray();
@@ -196,7 +218,7 @@ namespace wiz {
 					Delete();
 				}
 			}
-			else if (is_static && is_static2) { // int x = 5; PTR y = &x;
+			else if (is_static && is_make_static2) { // int x = 5; PTR y = &x;
 				ptr = nullptr;
 
 				if (is_array) {
@@ -227,21 +249,18 @@ namespace wiz {
 		explicit operator bool() const;
 		bool operator==(const WrapPointer& other) const;
 		bool operator!=(const WrapPointer& other) const;
-		WrapPointer operator+(const long long x) const {
-			WrapPointer temp;
-			temp.pid = GetId();
-			temp.name = "_" + this->name;
-			long long ppid = this->pid;
-			long long offset = x;
-			temp.ptr = this->ptr + x;
+		
+		static void plus(WrapPointer* x, WrapPointer* result, const long long offset) {
+			result->pid = GetId();
+			result->name = "_" + x->name;
+			long long ppid = x->pid;
+			result->ptr = x->ptr + offset;
 
-			FileManager::WriteLine(std::string("NewPlus = { \n") + wiz::toStr(temp.pid) + "%" + wiz::toStr(ppid) + "%" + wiz::toStr(offset)
-				+ "\"" + temp.name + "\"" + " } \n");
-
-			return temp;
+			FileManager::WriteLine(std::string("NewPlus = { \n") + wiz::toStr(result->pid) + "%" + wiz::toStr(ppid) + "%" + wiz::toStr(offset)
+				+ "\"" + result->name + "\"" + " } \n");
 		}
-		WrapPointer operator-(const long long x) const {
-			return (*this) + (-x);
+		static void minus(WrapPointer* x, WrapPointer* result, const long long offset) {
+			plus(x, result, -offset);
 		}
 		T& operator[](const int idx) {
 			FileManager::WriteLine(std::string("access_array = { ") + wiz::toStr(this->pid) + "\"" + this->name + "\"" + " "
@@ -255,64 +274,128 @@ namespace wiz {
 		}
 	public:
 		static void NewLocalArray(WrapPointer* x, const std::string& name, size_t n);
-		static WrapPointer NewArray(const std::string& name, size_t n);
+		static void NewArray(WrapPointer* x, const std::string& name, size_t n);
 		static void NewLocalArray(WrapPointer* x, size_t n);
-		static WrapPointer NewArray(size_t n);
+		static void NewArray(WrapPointer* x, size_t n);
 		void Delete();
 		void DeleteArray();
 
 		// for int** ?
 		static void NewLocal(WrapPointer* x, const T& value = T())
 		{
-			auto pid = GetId();
+			if (x->pid > 0) {
+				auto pid = GetId();
 
-			FileManager::WriteLine(std::string("NewLocal = { \n") + wiz::toStr(pid) + "\"\"" + " = { \n");
-			new (x) WrapPointer<T>(pid, new T(value));
-			x->is_static = true;
-			x->is_make_static = true;
-			FileManager::WriteLine(std::string(" } } \n"));
+				FileManager::WriteLine(std::string("NewLocal = { \n") + wiz::toStr(pid) + "\"\"" + " = { \n");
+				WrapPointer temp("", true);
+				new (&temp) WrapPointer<T>(pid, new T(value));
+				*x = temp;
+				x->is_static = true;
+				x->is_make_static = true;
+				FileManager::WriteLine(std::string(" } } \n"));
+			}
+			else {
+				auto pid = GetId();
+
+				FileManager::WriteLine(std::string("NewLocal = { \n") + wiz::toStr(pid) + "\"\"" + " = { \n");
+				new (x) WrapPointer<T>(pid, new T(value));
+				x->is_static = true;
+				x->is_make_static = true;
+				FileManager::WriteLine(std::string(" } } \n"));
+			}
 		}
 
 		static void NewLocal(WrapPointer* x, T* ptr) // ptr must be static.
 		{
-			auto pid = GetId();
+			bool chk = x->pid > 0;
 
-			FileManager::WriteLine(std::string("NewLocal = { \n") + wiz::toStr(pid) + "\"\"" + " = { \n");
-			new (x) WrapPointer<T>(pid, ptr);
-			x->is_static = true;
-			x->is_static2 = true;
-			FileManager::WriteLine(std::string(" } } \n"));
+			if (chk) {
+
+				auto pid = GetId();
+
+				WrapPointer temp("", true);
+				FileManager::WriteLine(std::string("NewLocal = { \n") + wiz::toStr(pid) + "\"\"" + " = { \n");
+				new (&temp) WrapPointer<T>(pid, ptr, "");
+				FileManager::WriteLine(std::string(" } } \n"));
+
+				*x = temp;
+				x->is_static = true;
+				x->is_make_static2 = true;
+			}
+			else {
+				auto pid = GetId();
+
+				FileManager::WriteLine(std::string("NewLocal = { \n") + wiz::toStr(pid) + "\"\"" + " = { \n");
+				new (x) WrapPointer<T>(pid, ptr);
+				FileManager::WriteLine(std::string(" } } \n"));
+				x->is_static = true;
+				x->is_make_static2 = true;
+			}
 		}
 
-		static WrapPointer New(const T& value = T())
+		static void New(WrapPointer* x, const T& value = T())
 		{
-			auto pid = GetId();
-			FileManager::WriteLine(std::string("New = { \n") + wiz::toStr(pid) + "\"\"" + " = { \n");
-			auto x = WrapPointer<T>(pid, new T(value));
-			x.is_make_static = true;
-			FileManager::WriteLine(std::string(" } } \n"));
-			return x;
+			if (x->pid > 0) {
+				auto pid = GetId();
+				FileManager::WriteLine(std::string("New = { \n") + wiz::toStr(pid) + "\"\"" + " = { \n");
+				WrapPointer temp("", true);
+				new (&temp) WrapPointer<T>(pid, new T(value));
+				*x = temp;
+				x->is_make_static = true;
+				FileManager::WriteLine(std::string(" } } \n"));
+			}
+			else {
+				auto pid = GetId();
+				FileManager::WriteLine(std::string("New = { \n") + wiz::toStr(pid) + "\"\"" + " = { \n");
+				new (x) WrapPointer<T>(pid, new T(value));
+				x->is_make_static = true;
+				FileManager::WriteLine(std::string(" } } \n"));
+			}
 		}
 
 		// for int** ?
 		static void NewLocalWithName(WrapPointer* x, const std::string& name = "", const T& value = T())
 		{
-			auto pid = GetId();
-			FileManager::WriteLine(std::string("NewLocal = { \n") + wiz::toStr(pid) + "\"" + name + "\"" + " = { \n");
-			new (x) WrapPointer<T>(pid, new T(value), name);
-			x->is_static = true;
-			x->is_make_static = true;
-			FileManager::WriteLine(std::string(" } } \n"));
+			if (x->pid > 0) {
+				auto pid = GetId();
+				FileManager::WriteLine(std::string("NewLocal = { \n") + wiz::toStr(pid) + "\"" + name + "\"" + " = { \n");
+				
+				WrapPointer temp("", true);
+				new (&temp) WrapPointer<T>(pid, new T(value), name);
+				
+				*x = temp;
+
+				x->is_static = true;
+				x->is_make_static = true;
+				FileManager::WriteLine(std::string(" } } \n"));
+			}
+			else {
+				auto pid = GetId();
+				FileManager::WriteLine(std::string("NewLocal = { \n") + wiz::toStr(pid) + "\"" + name + "\"" + " = { \n");
+				new (x) WrapPointer<T>(pid, new T(value), name);
+				x->is_static = true;
+				x->is_make_static = true;
+				FileManager::WriteLine(std::string(" } } \n"));
+
+			}
 		}
 
-		static WrapPointer NewWithName(const std::string& name = "", const T& value = T())
+		static void NewWithName(WrapPointer* x, const std::string& name = "", const T& value = T())
 		{
-			auto pid = GetId();
-			FileManager::WriteLine(std::string("New = { \n") + wiz::toStr(pid) + "\"" + name + "\"" + " = { \n");
-			auto x = WrapPointer<T>(pid, new T(value), name);
-			//x.is_make_static = true;
-			FileManager::WriteLine(std::string(" } } \n"));
-			return x;
+			if (x->pid > 0) {
+				auto pid = GetId();
+				FileManager::WriteLine(std::string("New = { \n") + wiz::toStr(pid) + "\"" + name + "\"" + " = { \n");
+				WrapPointer temp("", true);
+				new (&temp) WrapPointer<T>(pid, new T(value), name);
+				*x = temp;
+				FileManager::WriteLine(std::string(" } } \n"));
+			}
+			else {
+				auto pid = GetId();
+				FileManager::WriteLine(std::string("New = { \n") + wiz::toStr(pid) + "\"" + name + "\"" + " = { \n");
+				new (x) WrapPointer<T>(pid, new T(value), name);
+				FileManager::WriteLine(std::string(" } } \n"));
+			}
 		}
 
 	private:
@@ -381,40 +464,90 @@ namespace wiz {
 	}
 	template <class T>
 	void WrapPointer<T>::NewLocalArray(WrapPointer<T>* x, size_t n) {
-		auto pid = GetId();
-		FileManager::WriteLine(std::string() + "NewLocalArray = { " + wiz::toStr(pid) + "\"\"" + " " + wiz::toStr(n) + "\n");
-		new (x) WrapPointer(pid, new T[n]);
-		x->is_array = true;
-		x->is_static = true;
-		x->is_make_static = true;
-		FileManager::WriteLine(std::string() + " }\n");
+		if (x->pid > 0) {
+			auto pid = GetId();
+			FileManager::WriteLine(std::string() + "NewLocalArray = { " + wiz::toStr(pid) + "\"\"" + " " + wiz::toStr(n) + "\n");
+			WrapPointer temp("", true);
+			new (&temp) WrapPointer(pid, new T[n]);
+			*x = temp;
+			x->is_array = true;
+			x->is_static = true;
+			x->is_make_static = true;
+			FileManager::WriteLine(std::string() + " }\n");
+		}
+		else {
+			auto pid = GetId();
+			FileManager::WriteLine(std::string() + "NewLocalArray = { " + wiz::toStr(pid) + "\"\"" + " " + wiz::toStr(n) + "\n");
+			new (x) WrapPointer(pid, new T[n]);
+			x->is_array = true;
+			x->is_static = true;
+			x->is_make_static = true;
+			FileManager::WriteLine(std::string() + " }\n");
+		}
 	}
+
 	template <class T>
-	WrapPointer<T> WrapPointer<T>::NewArray(size_t n) {
-		auto pid = GetId();
-		FileManager::WriteLine(std::string() + "NewArray = { " + wiz::toStr(pid) + "\"\"" + " " + wiz::toStr(n) + "\n");
-		auto temp = WrapPointer(pid, new T[n]);
-		temp.is_array = true;
-		FileManager::WriteLine(std::string() + " }\n");
-		return temp;
+	void WrapPointer<T>::NewArray(WrapPointer<T>* x, size_t n) {
+		if (x->pid > 0) {
+			auto pid = GetId();
+			FileManager::WriteLine(std::string() + "NewArray = { " + wiz::toStr(pid) + "\"\"" + " " + wiz::toStr(n) + "\n");
+			WrapPointer temp("", true);
+
+			new (&temp) WrapPointer(pid, new T[n]);
+			
+			*x = temp;
+
+			x->is_array = true;
+			FileManager::WriteLine(std::string() + " }\n");
+		}
+		else {
+			auto pid = GetId();
+			FileManager::WriteLine(std::string() + "NewArray = { " + wiz::toStr(pid) + "\"\"" + " " + wiz::toStr(n) + "\n");
+			new (x) WrapPointer(pid, new T[n]);
+			x->is_array = true;
+			FileManager::WriteLine(std::string() + " }\n");
+		}
 	}
 	template <class T>
 	void WrapPointer<T>::NewLocalArray(WrapPointer<T>* x, const std::string& name, size_t n) {
-		auto pid = GetId();
-		FileManager::WriteLine(std::string() + "NewLocalArray = { " + wiz::toStr(pid) + "\"" + name + "\"" + " " + wiz::toStr(n) + "\n");
-		new (x) WrapPointer(pid, new T[n], name);
-		x->is_array = true;
-		x->is_static = true; x->is_make_static = true;
-		FileManager::WriteLine(std::string() + " }\n");
+		if (x->pid > 0) {
+			auto pid = GetId();
+			FileManager::WriteLine(std::string() + "NewLocalArray = { " + wiz::toStr(pid) + "\"" + name + "\"" + " " + wiz::toStr(n) + "\n");
+			
+			WrapPointer temp("", true);
+			new (&temp) WrapPointer(pid, new T[n], name);
+			*x = temp;
+			x->is_array = true;
+			x->is_static = true; x->is_make_static = true;
+			FileManager::WriteLine(std::string() + " }\n");
+		}
+		else {
+			auto pid = GetId();
+			FileManager::WriteLine(std::string() + "NewLocalArray = { " + wiz::toStr(pid) + "\"" + name + "\"" + " " + wiz::toStr(n) + "\n");
+			new (x) WrapPointer(pid, new T[n], name);
+			x->is_array = true;
+			x->is_static = true; x->is_make_static = true;
+			FileManager::WriteLine(std::string() + " }\n");
+		}
 	}
 	template <class T>
-	WrapPointer<T> WrapPointer<T>::NewArray(const std::string& name, size_t n) {
-		auto pid = GetId();
-		FileManager::WriteLine(std::string() + "NewArray = { " + wiz::toStr(pid) + "\"" + name + "\"" + " " + wiz::toStr(n) + "\n");
-		auto temp = WrapPointer(pid, new T[n], name);
-		temp.is_array = true;
-		FileManager::WriteLine(std::string() + " }\n");
-		return temp;
+	void WrapPointer<T>::NewArray(WrapPointer<T>* x, const std::string& name, size_t n) {
+		if (x->pid > 0) {
+			auto pid = GetId();
+			FileManager::WriteLine(std::string() + "NewArray = { " + wiz::toStr(pid) + "\"" + name + "\"" + " " + wiz::toStr(n) + "\n");
+			WrapPointer temp("", true);
+			new (&temp) WrapPointer(pid, new T[n], name);
+			*x = temp;
+			x->is_array = true;
+			FileManager::WriteLine(std::string() + " }\n");
+		}
+		else {
+			auto pid = GetId();
+			FileManager::WriteLine(std::string() + "NewArray = { " + wiz::toStr(pid) + "\"" + name + "\"" + " " + wiz::toStr(n) + "\n");
+			new (x) WrapPointer(pid, new T[n], name);
+			x->is_array = true;
+			FileManager::WriteLine(std::string() + " }\n");
+		}
 	}
 	template <class T>
 	void WrapPointer<T>::Delete() {
